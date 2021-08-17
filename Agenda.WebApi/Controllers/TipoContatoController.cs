@@ -1,11 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 
+using Agenda.WebApi.Model;
+using Agenda.WebApi.Data;
+
 namespace Agenda.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TipoContato: ControllerBase
+    public class TipoContatoController: ControllerBase
     {
+        private readonly AgendaContext _context;
+
+        public TipoContatoController(AgendaContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
         public IActionResult Get()
         {

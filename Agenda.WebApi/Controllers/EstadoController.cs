@@ -1,16 +1,17 @@
-using Agenda.WebApi.Data;
-using Agenda.WebApi.Model;
 using Microsoft.AspNetCore.Mvc;
+
+using Agenda.WebApi.Model.Models_Endereco;
+using Agenda.WebApi.Data;
 
 namespace Agenda.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EmailContatoController: ControllerBase
+    public class EstadoController: ControllerBase
     {
         private readonly AgendaContext _context;
 
-        public EmailContatoController(AgendaContext context)
+        public EstadoController(AgendaContext context)
         {
             _context = context;
         }
@@ -21,26 +22,32 @@ namespace Agenda.WebApi.Controllers
             return Ok("");
         }
 
-        [HttpGet("byId/id")]
+        [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
             return Ok("");
         }
 
+        [HttpGet("byName")]
+        public IActionResult GetByName(string nome)
+        {
+            return Ok("");
+        }
+
         [HttpPost]
-        public IActionResult Post(EmailContato emailContato)
+        public IActionResult Post(Estado estado)
         {
             return Ok("");
         }
 
         [HttpPut("id")]
-        public IActionResult Put(int id, EmailContato emailContato)
+        public IActionResult Put(int Id, Estado estado)
         {
             return Ok("");
         }
 
-        [HttpDelete("id")]
-        public IActionResult Get(int id)
+        [HttpDelete]
+        public IActionResult Delete(int Id)
         {
             return Ok("");
         }

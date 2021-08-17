@@ -1,3 +1,4 @@
+using Agenda.WebApi.Data;
 using Agenda.WebApi.Model;
 
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,13 @@ namespace Agenda.WebApi.Controllers
     [Route("api/[controller]")]
     public class TelefoneContatoController: ControllerBase
     {
+        private readonly AgendaContext _context;
+
+        public TelefoneContatoController(AgendaContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
