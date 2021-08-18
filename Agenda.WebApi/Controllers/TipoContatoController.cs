@@ -1,3 +1,5 @@
+using System.Linq;
+
 using Microsoft.AspNetCore.Mvc;
 
 using Agenda.WebApi.Model;
@@ -15,34 +17,65 @@ namespace Agenda.WebApi.Controllers
         {
             _context = context;
         }
+        
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("");
+            return Ok(_context.Tbl_Tipos_Contato);
         }
-        
+
         [HttpGet("byId/{id}")]
-        public IActionResult Get(int Id)
+        public IActionResult GetById(int id)
         {
-            return Ok("");
+            TipoContato tipoContato = _context.Tbl_Tipos_Contato.FirstOrDefault(cont => cont.Id == id);
+            
+            if(tipoContato is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+            return Ok(tipoContato);
         }
 
         [HttpPost]
         public IActionResult Post(TipoContato tipoContato)
         {
-            return Ok("");
+            _context.Tbl_Tipos_Contato.Add(tipoContato);
+            
+            if(_context.SaveChanges() == 0)
+                BadRequest("Não foi possível incluir o registro.");
+            
+            return Ok(tipoContato);
         }
 
         [HttpPut("id")]
-        public IActionResult Put(int id, TipoContato tipoContato)
+        public IActionResult Put(int Id, TipoContato tipoContato)
         {
-            return Ok("");
+            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.FirstOrDefault(cont => cont.Id == Id);
+            
+            if(tipoContatoAux is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+             _context.Tbl_Tipos_Contato.Update(tipoContato);
+            
+            if(_context.SaveChanges() == 0)
+                return BadRequest("Não foi possível realizar alteração do registro.");
+            
+            return Ok(tipoContato);
         }
 
-        [HttpDelete("id")]
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete(int Id)
         {
-            return Ok("");
+            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.FirstOrDefault(email => email.Id == Id);
+            
+            if(tipoContatoAux is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+            _context.Tbl_Tipos_Contato.Remove(tipoContatoAux);
+
+            if(_context.SaveChanges() == 0)
+                return BadRequest("Não foi possível realizar a exclusão do registro");
+            
+            return Ok($"Tipo Contato foi deletado com sucesso.");
         }
     }
 }

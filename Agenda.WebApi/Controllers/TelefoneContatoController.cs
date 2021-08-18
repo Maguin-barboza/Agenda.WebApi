@@ -1,3 +1,4 @@
+using System.Linq;
 using Agenda.WebApi.Data;
 using Agenda.WebApi.Model;
 
@@ -19,31 +20,60 @@ namespace Agenda.WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("");
+            return Ok(_context.Tbl_Telefones_Contato);
         }
 
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok("");
+            Telefone telefone = _context.Tbl_Telefones_Contato.FirstOrDefault(cont => cont.Id == id);
+            if(telefone is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+            return Ok(telefone);
         }
 
         [HttpPost]
         public IActionResult Post(Telefone telefone)
         {
-            return Ok("");
+            _context.Tbl_Telefones_Contato.Add(telefone);
+            
+            if(_context.SaveChanges() == 0)
+                BadRequest("Não foi possível incluir o registro.");
+            
+            return Ok(telefone);
         }
 
         [HttpPut("id")]
-        public IActionResult Put(int id, Telefone telefone)
+        public IActionResult Put(int Id, Telefone telefone)
         {
-            return Ok("");
+            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(cont => cont.Id == Id);
+            
+            if(telefoneAux is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+             _context.Tbl_Telefones_Contato.Update(telefone);
+            
+            if(_context.SaveChanges() == 0)
+                return BadRequest("Não foi possível realizar alteração do registro.");
+            
+            return Ok(telefone);
         }
 
-        [HttpDelete("id")]
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete(int Id)
         {
-            return Ok("");
+            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(email => email.Id == Id);
+            
+            if(telefoneAux is null)
+                return BadRequest("Não existe registro com id especificado.");
+            
+            _context.Tbl_Telefones_Contato.Remove(telefoneAux);
+
+            if(_context.SaveChanges() == 0)
+                return BadRequest("Não foi possível realizar a exclusão do registro");
+            
+            return Ok($"Telefone foi deletado com sucesso.");
         }
     }
 }

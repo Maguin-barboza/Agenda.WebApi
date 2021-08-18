@@ -4,7 +4,7 @@ namespace Agenda.WebApi.Model.Models_Endereco
     {
         public int Id { get; set; }
         public int IdContato { get; set; }
-        public Contato Contato { get; set; }
+        public EmailContato Contato { get; set; }
         public int IdTipoEndereco { get; set; }
         public TipoEndereco TipoEndereco { get; set; }
         public string Logradouro { get; set; }
