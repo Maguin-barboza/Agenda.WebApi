@@ -26,7 +26,7 @@ namespace Agenda.WebApi.Controllers
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            Telefone telefone = _context.Tbl_Telefones_Contato.FirstOrDefault(cont => cont.Id == id);
+            Telefone telefone = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == id);
             if(telefone is null)
                 return BadRequest("Não existe registro com id especificado.");
             
@@ -47,7 +47,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("id")]
         public IActionResult Put(int Id, Telefone telefone)
         {
-            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(cont => cont.Id == Id);
+            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == Id);
             
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -63,7 +63,7 @@ namespace Agenda.WebApi.Controllers
         [HttpDelete]
         public IActionResult Delete(int Id)
         {
-            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(email => email.Id == Id);
+            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == Id);
             
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");

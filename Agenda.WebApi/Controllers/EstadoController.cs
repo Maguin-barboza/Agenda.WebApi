@@ -26,7 +26,7 @@ namespace Agenda.WebApi.Controllers
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            Estado estado = _context.Tbl_Estados.FirstOrDefault(cont => cont.Id == id);
+            Estado estado = _context.Tbl_Estados.FirstOrDefault(estado => estado.Id == id);
             if(estado is null)
                 return BadRequest("Não existe registro com id especificado.");
             
@@ -47,7 +47,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("id")]
         public IActionResult Put(int Id, Estado estado)
         {
-            Estado estadoAux = _context.Tbl_Estados.FirstOrDefault(cont => cont.Id == Id);
+            Estado estadoAux = _context.Tbl_Estados.FirstOrDefault(estado => estado.Id == Id);
             
             if(estadoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -63,7 +63,7 @@ namespace Agenda.WebApi.Controllers
         [HttpDelete]
         public IActionResult Delete(int Id)
         {
-            Estado estadoAux = _context.Tbl_Estados.FirstOrDefault(email => email.Id == Id);
+            Estado estadoAux = _context.Tbl_Estados.FirstOrDefault(estado => estado.Id == Id);
             
             if(estadoAux is null)
                 return BadRequest("Não existe registro com id especificado.");

@@ -25,7 +25,7 @@ namespace Agenda.WebApi.Controllers
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            EmailContato emailContato = _context.Tbl_Emails_Contato.FirstOrDefault(cont => cont.Id == id);
+            EmailContato emailContato = _context.Tbl_Emails_Contato.FirstOrDefault(email => email.Id == id);
             if(emailContato is null)
                 return BadRequest("Não existe registro com id especificado.");
             
@@ -46,7 +46,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("id")]
         public IActionResult Put(int Id, EmailContato emailContato)
         {
-            EmailContato emailContatoAux = _context.Tbl_Emails_Contato.FirstOrDefault(cont => cont.Id == Id);
+            EmailContato emailContatoAux = _context.Tbl_Emails_Contato.FirstOrDefault(email => email.Id == Id);
             
             if(emailContatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");

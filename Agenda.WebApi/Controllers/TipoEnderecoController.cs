@@ -27,7 +27,7 @@ namespace Agenda.WebApi.Controllers
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            TipoEndereco tipoEndereco = _context.Tbl_Tipos_Endereco.FirstOrDefault(cont => cont.Id == id);
+            TipoEndereco tipoEndereco = _context.Tbl_Tipos_Endereco.FirstOrDefault(te => te.Id == id);
             
             if(tipoEndereco is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -49,7 +49,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("id")]
         public IActionResult Put(int Id, TipoEndereco tipoEndereco)
         {
-            TipoEndereco tipoEnderecoAux = _context.Tbl_Tipos_Endereco.FirstOrDefault(cont => cont.Id == Id);
+            TipoEndereco tipoEnderecoAux = _context.Tbl_Tipos_Endereco.FirstOrDefault(te => te.Id == Id);
             
             if(tipoEnderecoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -65,7 +65,7 @@ namespace Agenda.WebApi.Controllers
         [HttpDelete]
         public IActionResult Delete(int Id)
         {
-            TipoEndereco tipoEnderecoAux = _context.Tbl_Tipos_Endereco.FirstOrDefault(email => email.Id == Id);
+            TipoEndereco tipoEnderecoAux = _context.Tbl_Tipos_Endereco.FirstOrDefault(te => te.Id == Id);
             
             if(tipoEnderecoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
