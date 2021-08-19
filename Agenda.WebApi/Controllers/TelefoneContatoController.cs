@@ -1,8 +1,10 @@
 using System.Linq;
-using Agenda.WebApi.Data;
-using Agenda.WebApi.Model;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+using Agenda.WebApi.Data;
+using Agenda.WebApi.Model;
 
 namespace Agenda.WebApi.Controllers
 {
@@ -44,10 +46,10 @@ namespace Agenda.WebApi.Controllers
             return Ok(telefone);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public IActionResult Put(int Id, Telefone telefone)
         {
-            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == Id);
+            Telefone telefoneAux = _context.Tbl_Telefones_Contato.AsNoTracking().FirstOrDefault(tel => tel.Id == Id);
             
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -60,7 +62,7 @@ namespace Agenda.WebApi.Controllers
             return Ok(telefone);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int Id)
         {
             Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == Id);

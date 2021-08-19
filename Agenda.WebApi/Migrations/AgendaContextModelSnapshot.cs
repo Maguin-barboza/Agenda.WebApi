@@ -49,9 +49,6 @@ namespace Agenda.WebApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int>("IdTipoContato")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .HasMaxLength(70)
                         .HasColumnType("varchar(70)");
@@ -63,7 +60,7 @@ namespace Agenda.WebApi.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("varchar(70)");
 
-                    b.Property<int?>("TipoId")
+                    b.Property<int>("TipoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -80,15 +77,12 @@ namespace Agenda.WebApi.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("ContatoId")
+                    b.Property<int>("ContatoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
-
-                    b.Property<int>("IdContato")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -104,10 +98,7 @@ namespace Agenda.WebApi.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("ContatoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdContato")
+                    b.Property<int>("ContatoId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsFax")
@@ -144,27 +135,40 @@ namespace Agenda.WebApi.Migrations
                 {
                     b.HasOne("Agenda.WebApi.Model.TipoContato", "Tipo")
                         .WithMany()
-                        .HasForeignKey("TipoId");
+                        .HasForeignKey("TipoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tipo");
                 });
 
             modelBuilder.Entity("Agenda.WebApi.Model.EmailContato", b =>
                 {
-                    b.HasOne("Agenda.WebApi.Model.EmailContato", "Contato")
-                        .WithMany()
-                        .HasForeignKey("ContatoId");
+                    b.HasOne("Agenda.WebApi.Model.Contato", "Contato")
+                        .WithMany("EmailsContato")
+                        .HasForeignKey("ContatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Contato");
                 });
 
             modelBuilder.Entity("Agenda.WebApi.Model.Telefone", b =>
                 {
-                    b.HasOne("Agenda.WebApi.Model.EmailContato", "Contato")
-                        .WithMany()
-                        .HasForeignKey("ContatoId");
+                    b.HasOne("Agenda.WebApi.Model.Contato", "Contato")
+                        .WithMany("TelefonesContato")
+                        .HasForeignKey("ContatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Contato");
+                });
+
+            modelBuilder.Entity("Agenda.WebApi.Model.Contato", b =>
+                {
+                    b.Navigation("EmailsContato");
+
+                    b.Navigation("TelefonesContato");
                 });
 #pragma warning restore 612, 618
         }
