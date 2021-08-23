@@ -32,7 +32,8 @@ namespace Agenda.WebApi
             services.AddDbContext<AgendaContext>(
                 context => context.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
-
+            services.AddScoped<IRepository, Repository>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

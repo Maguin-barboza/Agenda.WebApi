@@ -13,10 +13,12 @@ namespace Agenda.WebApi.Controllers
     public class TelefoneContatoController: ControllerBase
     {
         private readonly AgendaContext _context;
+		private readonly IRepository _repository;
 
-        public TelefoneContatoController(AgendaContext context)
+		public TelefoneContatoController(IRepository repository, AgendaContext context)
         {
             _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -38,9 +40,9 @@ namespace Agenda.WebApi.Controllers
         [HttpPost]
         public IActionResult Post(Telefone telefone)
         {
-            _context.Tbl_Telefones_Contato.Add(telefone);
+            _repository.Add(telefone);
             
-            if(_context.SaveChanges() == 0)
+            if(_repository.SaveChanges())
                 BadRequest("Não foi possível incluir o registro.");
             
             return Ok(telefone);
@@ -54,9 +56,9 @@ namespace Agenda.WebApi.Controllers
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-             _context.Tbl_Telefones_Contato.Update(telefone);
+            _repository.Update(telefone);
             
-            if(_context.SaveChanges() == 0)
+            if(_repository.SaveChanges())
                 return BadRequest("Não foi possível realizar alteração do registro.");
             
             return Ok(telefone);
@@ -70,9 +72,9 @@ namespace Agenda.WebApi.Controllers
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-            _context.Tbl_Telefones_Contato.Remove(telefoneAux);
+            _repository.Delete(telefoneAux);
 
-            if(_context.SaveChanges() == 0)
+            if(_repository.SaveChanges())
                 return BadRequest("Não foi possível realizar a exclusão do registro");
             
             return Ok($"Telefone foi deletado com sucesso.");

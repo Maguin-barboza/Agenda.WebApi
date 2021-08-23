@@ -13,10 +13,12 @@ namespace Agenda.WebApi.Controllers
     public class EmailContatoController: ControllerBase
     {
         private readonly AgendaContext _context;
+		private readonly IRepository _repository;
 
-        public EmailContatoController(AgendaContext context)
+		public EmailContatoController(IRepository repository, AgendaContext context)
         {
             _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -38,9 +40,9 @@ namespace Agenda.WebApi.Controllers
         [HttpPost]
         public IActionResult Post(EmailContato emailContato)
         {
-            _context.Tbl_Emails_Contato.Add(emailContato);
+            _repository.Add(emailContato);
             
-            if(_context.SaveChanges() == 0)
+            if(_repository.SaveChanges())
                 BadRequest("Não foi possível incluir o registro.");
             
             return Ok(emailContato);
@@ -54,10 +56,10 @@ namespace Agenda.WebApi.Controllers
             if(emailContatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-             _context.Tbl_Emails_Contato.Update(emailContato);
+            _repository.Update(emailContato);
             
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar alteração do registro.");
+            if(_repository.SaveChanges())
+                BadRequest("Não foi possível alterar o registro.");
             
             return Ok(emailContato);
         }
@@ -70,10 +72,10 @@ namespace Agenda.WebApi.Controllers
             if(emailContatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-            _context.Tbl_Emails_Contato.Remove(emailContatoAux);
-
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar a exclusão do registro");
+            _repository.Delete(emailContatoAux);
+            
+            if(_repository.SaveChanges())
+                BadRequest("Não foi possível deletar o registro.");
             
             return Ok($"Email do contato {emailContatoAux.Email} foi deletado com sucesso.");
         }

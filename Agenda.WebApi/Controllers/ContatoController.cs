@@ -13,10 +13,12 @@ namespace Agenda.WebApi.Controllers
     public class ContatoController: ControllerBase
     {
         private readonly AgendaContext _context;
+		private readonly IRepository _repository;
 
-        public ContatoController(AgendaContext context)
+		public ContatoController(IRepository repository, AgendaContext context)
         {
             _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -50,9 +52,9 @@ namespace Agenda.WebApi.Controllers
         [HttpPost]
         public IActionResult Post(Contato contato)
         {
-            _context.Tbl_Contatos.Add(contato);
+            _repository.Add(contato);
             
-            if(_context.SaveChanges() == 0)
+            if(_repository.SaveChanges())
                 BadRequest("Não foi possível incluir o registro.");
             
             return Ok(contato);
@@ -66,10 +68,10 @@ namespace Agenda.WebApi.Controllers
             if(contatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-             _context.Tbl_Contatos.Update(contato);
+            _repository.Update(contato);
             
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar alteração do registro.");
+            if(_repository.SaveChanges())
+                BadRequest("Não foi possível alterar o registro.");
             
             return Ok(contato);
         }
@@ -82,10 +84,10 @@ namespace Agenda.WebApi.Controllers
             if(contatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-            _context.Tbl_Contatos.Remove(contatoAux);
-
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar a exclusão do registro");
+            _repository.Delete(contatoAux);
+            
+            if(_repository.SaveChanges())
+                BadRequest("Não foi possível deletar o registro.");
             
             return Ok($"Contato {contatoAux.Nome} foi deletado com sucesso.");
         }
