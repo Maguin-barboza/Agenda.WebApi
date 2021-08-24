@@ -12,72 +12,68 @@ namespace Agenda.WebApi.Controllers
     [Route("api/[controller]")]
     public class EmailContatoController: ControllerBase
     {
-        private readonly AgendaContext _context;
 		private readonly IRepository _repository;
 
-		public EmailContatoController(IRepository repository, AgendaContext context)
+		public EmailContatoController(IRepository repository)
         {
-            _context = context;
             _repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("byIdContato/{idContato}")]
+        public IActionResult GetByIdContato(int contatoId)
         {
-            return Ok(_context.Tbl_Emails_Contato);
+            EmailContato[] emailsContato = _repository.GetEmailsByContatoId(contatoId);
+            return Ok(emailsContato);
         }
 
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            EmailContato emailContato = _context.Tbl_Emails_Contato.FirstOrDefault(email => email.Id == id);
-            if(emailContato is null)
-                return BadRequest("Não existe registro com id especificado.");
-            
-            return Ok(emailContato);
+            EmailContato email = _repository.GetEmailById(id);
+            return Ok(email);
         }
 
         [HttpPost]
-        public IActionResult Post(EmailContato emailContato)
+        public IActionResult Post(EmailContato email)
         {
-            _repository.Add(emailContato);
+            _repository.Add(email);
             
             if(_repository.SaveChanges())
                 BadRequest("Não foi possível incluir o registro.");
             
-            return Ok(emailContato);
+            return Ok(email);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int Id, EmailContato emailContato)
+        public IActionResult Put(int Id, EmailContato email)
         {
-            EmailContato emailContatoAux = _context.Tbl_Emails_Contato.AsNoTracking().FirstOrDefault(email => email.Id == Id);
+            EmailContato emailAux = _repository.GetEmailById(Id);
             
-            if(emailContatoAux is null)
+            if(emailAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-            _repository.Update(emailContato);
+            _repository.Update(email);
             
             if(_repository.SaveChanges())
-                BadRequest("Não foi possível alterar o registro.");
+                return BadRequest("Não foi possível realizar alteração do registro.");
             
-            return Ok(emailContato);
+            return Ok(email);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int Id)
         {
-            EmailContato emailContatoAux = _context.Tbl_Emails_Contato.FirstOrDefault(email => email.Id == Id);
+            EmailContato emailAux = _repository.GetEmailById(Id);;
             
-            if(emailContatoAux is null)
+            if(emailAux is null)
                 return BadRequest("Não existe registro com id especificado.");
             
-            _repository.Delete(emailContatoAux);
-            
+            _repository.Delete(emailAux);
+
             if(_repository.SaveChanges())
-                BadRequest("Não foi possível deletar o registro.");
+                return BadRequest("Não foi possível realizar a exclusão do registro");
             
-            return Ok($"Email do contato {emailContatoAux.Email} foi deletado com sucesso.");
+            return Ok($"Email foi deletado com sucesso.");
         }
     }
 }

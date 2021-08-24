@@ -12,11 +12,13 @@ namespace Agenda.WebApi.Data
         bool SaveChanges();
 
         Contato[] GetAllContatos();
-        Contato GetByIdContato(int id);
+        Contato GetByContatoId(int id);
         Contato GetContatoByName(string Nome, string sobrenome);
-        
-        Telefone[] GetAllTelefonesContato(int IdContato);
-        
-        EmailContato[] GetAllEmailsContato(int IdContato);
+
+        public Telefone[] GetTelefonesByContatoId(int contatoId);
+		public Telefone GetTelefoneById(int IdTelefone);
+		
+        public EmailContato[] GetEmailsByContatoId(int contatoId);
+		public EmailContato GetEmailById(int IdEmail);
     }
 }

@@ -46,29 +46,54 @@ namespace Agenda.WebApi.Data
 			return Query.ToArray();
 		}
 
-		public Contato GetByIdContato(int id)
+		public Contato GetByContatoId(int id)
 		{
 			IQueryable<Contato> Query = _context.Tbl_Contatos;
 			
-			Contato contatoAux = Query.Include(contato => contato.TelefonesContato.Where(telefone => telefone.ContatoId == id))
-						 			  .FirstOrDefault(cont => cont.Id == id);
-			
+			Contato contatoAux = Query.Where(contato => contato.Id == id)
+			 						  .Include(c => c.TelefonesContato)
+								      .Include(c => c.EmailsContato)
+						 			  .FirstOrDefault();
 			return contatoAux;
 		}
 
-		public Contato GetContatoByName(string Nome, string sobrenome)
+		public Contato GetContatoByName(string nome, string sobrenome)
 		{
-			throw new System.NotImplementedException();
+			IQueryable<Contato> Query = _context.Tbl_Contatos;
+			
+			Contato contatoAux = Query.Where(contato => contato.Nome.Contains(nome) && contato.Nome.Contains(sobrenome))
+			 						  .Include(c => c.TelefonesContato)
+								      .Include(c => c.EmailsContato)
+						 			  .FirstOrDefault();
+			return contatoAux;
 		}
 
-		public Telefone[] GetAllTelefonesContato(int IdContato)
+		public Telefone[] GetTelefonesByContatoId(int contatoId)
 		{
-			throw new System.NotImplementedException();
+			IQueryable<Telefone> Query = _context.Tbl_Telefones_Contato
+								 .Where(tel => tel.ContatoId == contatoId);
+			
+			return Query.ToArray();
 		}
 
-		public EmailContato[] GetAllEmailsContato(int IdContato)
+		public Telefone GetTelefoneById(int IdTelefone)
 		{
-			throw new System.NotImplementedException();
+			return _context.Tbl_Telefones_Contato
+				   .FirstOrDefault(tel => tel.Id == IdTelefone);
+		}
+
+		public EmailContato[] GetEmailsByContatoId(int contatoId)
+		{
+			IQueryable<EmailContato> Query = _context.Tbl_Emails_Contato
+								 			 .Where(email => email.ContatoId == contatoId);
+			
+			return Query.ToArray();
+		}
+
+		public EmailContato GetEmailById(int IdEmail)
+		{
+			return _context.Tbl_Emails_Contato
+				   .FirstOrDefault(email => email.Id == IdEmail);
 		}
 	}
 }

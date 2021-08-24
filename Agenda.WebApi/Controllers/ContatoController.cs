@@ -12,25 +12,24 @@ namespace Agenda.WebApi.Controllers
     [Route("api/[controller]")]
     public class ContatoController: ControllerBase
     {
-        private readonly AgendaContext _context;
 		private readonly IRepository _repository;
 
 		public ContatoController(IRepository repository, AgendaContext context)
         {
-            _context = context;
             _repository = repository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Tbl_Contatos);
+            return Ok(_repository.GetAllContatos());
         }
 
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            Contato contato = _context.Tbl_Contatos.FirstOrDefault(cont => cont.Id == id);
+            Contato contato = _repository.GetByContatoId(id);
+            
             if(contato is null)
                 return BadRequest("Não existe registro com id especificado.");
             
@@ -40,8 +39,7 @@ namespace Agenda.WebApi.Controllers
         [HttpGet("byName")]
         public IActionResult GetByName(string nome, string sobrenome)
         {
-            Contato contato = _context.Tbl_Contatos.FirstOrDefault(cont => 
-                cont.Nome.Contains(nome) && cont.Nome.Contains(sobrenome));
+            Contato contato = _repository.GetContatoByName(nome, sobrenome);
             
             if(contato is null)
                 return BadRequest("Não foi possível encontrar registro com nome e sobrenome especificado.");
@@ -63,7 +61,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int Id, Contato contato)
         {
-            Contato contatoAux = _context.Tbl_Contatos.AsNoTracking().FirstOrDefault(cont => cont.Id == Id);
+            Contato contatoAux = _repository.GetByContatoId(Id);
             
             if(contatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -79,7 +77,7 @@ namespace Agenda.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int Id)
         {
-            Contato contatoAux = _context.Tbl_Contatos.FirstOrDefault(cont => cont.Id == Id);
+            Contato contatoAux = _repository.GetByContatoId(Id);
             
             if(contatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");

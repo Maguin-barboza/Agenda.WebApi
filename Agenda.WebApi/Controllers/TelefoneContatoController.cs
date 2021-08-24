@@ -12,28 +12,24 @@ namespace Agenda.WebApi.Controllers
     [Route("api/[controller]")]
     public class TelefoneContatoController: ControllerBase
     {
-        private readonly AgendaContext _context;
 		private readonly IRepository _repository;
 
-		public TelefoneContatoController(IRepository repository, AgendaContext context)
+		public TelefoneContatoController(IRepository repository)
         {
-            _context = context;
             _repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("byIdContato/{idContato}")]
+        public IActionResult GetByIdContato(int idContato)
         {
-            return Ok(_context.Tbl_Telefones_Contato);
+            Telefone[] telefonesContato = _repository.GetTelefonesByContatoId(idContato);
+            return Ok(telefonesContato);
         }
 
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            Telefone telefone = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == id);
-            if(telefone is null)
-                return BadRequest("Não existe registro com id especificado.");
-            
+            Telefone telefone = _repository.GetTelefoneById(id);
             return Ok(telefone);
         }
 
@@ -51,7 +47,7 @@ namespace Agenda.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int Id, Telefone telefone)
         {
-            Telefone telefoneAux = _context.Tbl_Telefones_Contato.AsNoTracking().FirstOrDefault(tel => tel.Id == Id);
+            Telefone telefoneAux = _repository.GetTelefoneById(Id);
             
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -67,7 +63,7 @@ namespace Agenda.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int Id)
         {
-            Telefone telefoneAux = _context.Tbl_Telefones_Contato.FirstOrDefault(tel => tel.Id == Id);
+            Telefone telefoneAux = _repository.GetTelefoneById(Id);;
             
             if(telefoneAux is null)
                 return BadRequest("Não existe registro com id especificado.");

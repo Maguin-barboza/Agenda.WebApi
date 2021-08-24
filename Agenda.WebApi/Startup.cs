@@ -33,8 +33,11 @@ namespace Agenda.WebApi
                 context => context.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
             services.AddScoped<IRepository, Repository>();
+            services.AddControllers()
+                    .AddNewtonsoftJson(
+                    opt => opt.SerializerSettings.ReferenceLoopHandling = 
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda.WebApi", Version = "v1" });
