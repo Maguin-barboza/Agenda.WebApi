@@ -38,11 +38,41 @@ namespace Agenda.WebApi.Data
 			return (_context.SaveChanges() > 0);
 		}
 
+		public TipoContato[] GetAllTipoContato()
+		{
+			IQueryable<TipoContato> Query = _context.Tbl_Tipos_Contato;
+
+			Query = Query.AsNoTracking()
+						 .Include(tc => tc.Contatos)
+						 .ThenInclude(cont => cont.TelefonesContato)
+						 .Include(tc => tc.Contatos).ThenInclude(cont => cont.EmailsContato)
+						 .OrderBy(tc => tc.Id);
+			return Query.ToArray();
+		}
+
+		public TipoContato GetTipoContatoById(int Id)
+		{
+			IQueryable<TipoContato> Query = _context.Tbl_Tipos_Contato;
+			return Query.FirstOrDefault(tc => tc.Id == Id);
+		}
+
 		public Contato[] GetAllContatos()
 		{
 			IQueryable<Contato> Query = _context.Tbl_Contatos;
 
-			Query = Query.AsNoTracking().OrderBy(contato => contato.Nome);
+			Query = Query.AsNoTracking()
+						 .Include(cont => cont.TelefonesContato)
+						 .Include(cont => cont.EmailsContato)
+						 .Include(cont => cont.Tipo)
+						 .OrderBy(contato => contato.Nome);
+			return Query.ToArray();
+		}
+		
+		public Contato[] GetContatosByIdTipo(int IdTipoContato)
+		{
+			IQueryable<Contato> Query = _context.Tbl_Contatos;
+			Query = Query.Where(cont => cont.TipoId == IdTipoContato)
+						 .OrderBy(cont => cont.Nome);
 			return Query.ToArray();
 		}
 
@@ -70,30 +100,27 @@ namespace Agenda.WebApi.Data
 
 		public Telefone[] GetTelefonesByContatoId(int contatoId)
 		{
-			IQueryable<Telefone> Query = _context.Tbl_Telefones_Contato
-								 .Where(tel => tel.ContatoId == contatoId);
-			
-			return Query.ToArray();
+			IQueryable<Telefone> Query = _context.Tbl_Telefones_Contato;
+			return Query.Where(tel => tel.ContatoId == contatoId).ToArray();
 		}
 
 		public Telefone GetTelefoneById(int IdTelefone)
 		{
-			return _context.Tbl_Telefones_Contato
-				   .FirstOrDefault(tel => tel.Id == IdTelefone);
+			IQueryable<Telefone> Query = _context.Tbl_Telefones_Contato;
+			return Query.FirstOrDefault(tel => tel.Id == IdTelefone);
 		}
 
 		public EmailContato[] GetEmailsByContatoId(int contatoId)
 		{
-			IQueryable<EmailContato> Query = _context.Tbl_Emails_Contato
-								 			 .Where(email => email.ContatoId == contatoId);
+			IQueryable<EmailContato> Query = _context.Tbl_Emails_Contato;
 			
-			return Query.ToArray();
+			return Query.Where(email => email.ContatoId == contatoId).ToArray();
 		}
 
 		public EmailContato GetEmailById(int IdEmail)
 		{
-			return _context.Tbl_Emails_Contato
-				   .FirstOrDefault(email => email.Id == IdEmail);
+			IQueryable<EmailContato> Query = _context.Tbl_Emails_Contato;
+			return Query.FirstOrDefault(email => email.Id == IdEmail);
 		}
 	}
 }

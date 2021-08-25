@@ -11,14 +11,18 @@ namespace Agenda.WebApi.Data
         void Delete<T>(T entity) where T: class;
         bool SaveChanges();
 
+        TipoContato[] GetAllTipoContato();
+        TipoContato GetTipoContatoById(int Id);
+
         Contato[] GetAllContatos();
+        Contato[] GetContatosByIdTipo(int IdTipoContato);
         Contato GetByContatoId(int id);
         Contato GetContatoByName(string Nome, string sobrenome);
 
-        public Telefone[] GetTelefonesByContatoId(int contatoId);
-		public Telefone GetTelefoneById(int IdTelefone);
-		
-        public EmailContato[] GetEmailsByContatoId(int contatoId);
-		public EmailContato GetEmailById(int IdEmail);
+        Telefone[] GetTelefonesByContatoId(int contatoId);
+		Telefone GetTelefoneById(int IdTelefone);
+
+        EmailContato[] GetEmailsByContatoId(int contatoId);
+		EmailContato GetEmailById(int IdEmail);
     }
 }

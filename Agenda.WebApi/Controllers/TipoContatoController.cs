@@ -12,25 +12,23 @@ namespace Agenda.WebApi.Controllers
     [Route("api/[controller]")]
     public class TipoContatoController: ControllerBase
     {
-        private readonly AgendaContext _context;
 		private readonly IRepository _repository;
 
-		public TipoContatoController(IRepository repository, AgendaContext context)
+		public TipoContatoController(IRepository repository)
         {
-            _context = context;
             _repository = repository;
         }
         
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Tbl_Tipos_Contato);
+            return Ok(_repository.GetAllTipoContato());
         }
 
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            TipoContato tipoContato = _context.Tbl_Tipos_Contato.FirstOrDefault(tc => tc.Id == id);
+            TipoContato tipoContato = _repository.GetTipoContatoById(id);
             
             if(tipoContato is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -50,9 +48,9 @@ namespace Agenda.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int Id, TipoContato tipoContato)
+        public IActionResult Put(int id, TipoContato tipoContato)
         {
-            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.AsNoTracking().FirstOrDefault(tc => tc.Id == Id);
+            TipoContato tipoContatoAux = _repository.GetTipoContatoById(id);
             
             if(tipoContatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
@@ -66,9 +64,9 @@ namespace Agenda.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int Id)
+        public IActionResult Delete(int id)
         {
-            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.FirstOrDefault(tc => tc.Id == Id);
+            TipoContato tipoContatoAux = _repository.GetTipoContatoById(id);
             
             if(tipoContatoAux is null)
                 return BadRequest("Não existe registro com id especificado.");
