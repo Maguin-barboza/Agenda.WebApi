@@ -14,7 +14,7 @@ namespace Agenda.WebApi.Helpers
                 .ForMember(dest => dest.Nome,
                 opt => opt.MapFrom(src => $"{src.Nome} {src.Sobrenome}") 
             )
-            .ForMember(dest => dest.TipoContato,
+            .ForMember(dest => dest.Tipo,
                        op => op.MapFrom(src => src.Tipo.Descricao))
             .ForMember(dest => dest.DataAniversario,
                        opt => opt.MapFrom(src => src.DataAniversario.GetBirthday()))
@@ -24,6 +24,7 @@ namespace Agenda.WebApi.Helpers
                        opt => opt.MapFrom(src => src.EmailsContato.FirstOrDefault().Email));
             
             CreateMap<ContatoDto, Contato>();
+            CreateMap<Contato, ContatoRegistrarDto>().ReverseMap();
         }
     }
 }

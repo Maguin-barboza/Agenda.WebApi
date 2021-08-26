@@ -63,7 +63,7 @@ namespace Agenda.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(ContatoDto model)
+        public IActionResult Post(ContatoRegistrarDto model)
         {
             Contato contato = _mapper.Map<Contato>(model);
             _repository.Add(contato);
@@ -75,7 +75,7 @@ namespace Agenda.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int Id, ContatoDto model)
+        public IActionResult Put(int Id, ContatoRegistrarDto model)
         {
             Contato contato = _repository.GetByContatoId(Id);
             
