@@ -44,7 +44,7 @@ namespace Agenda.WebApi.Controllers
             return Ok(email);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
         public IActionResult Put(int Id, EmailContato email)
         {
             EmailContato emailAux = _repository.GetEmailById(Id);
@@ -60,7 +60,7 @@ namespace Agenda.WebApi.Controllers
             return Ok(email);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
             EmailContato emailAux = _repository.GetEmailById(Id);;

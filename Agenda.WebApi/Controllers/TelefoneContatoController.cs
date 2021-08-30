@@ -44,7 +44,7 @@ namespace Agenda.WebApi.Controllers
             return Ok(telefone);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
         public IActionResult Put(int Id, Telefone telefone)
         {
             Telefone telefoneAux = _repository.GetTelefoneById(Id);
@@ -60,7 +60,7 @@ namespace Agenda.WebApi.Controllers
             return Ok(telefone);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
             Telefone telefoneAux = _repository.GetTelefoneById(Id);;

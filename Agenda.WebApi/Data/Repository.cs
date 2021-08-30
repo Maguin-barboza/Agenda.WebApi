@@ -83,6 +83,7 @@ namespace Agenda.WebApi.Data
 			Contato contatoAux = Query.Where(contato => contato.Id == id)
 			 						  .Include(c => c.TelefonesContato)
 								      .Include(c => c.EmailsContato)
+									  .Include(c => c.Tipo)
 						 			  .FirstOrDefault();
 			return contatoAux;
 		}

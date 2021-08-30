@@ -71,10 +71,10 @@ namespace Agenda.WebApi.Controllers
             if(_repository.SaveChanges())
                 BadRequest("Não foi possível incluir o registro.");
             
-            return Created($"/api/contato/{model.Id}", _mapper.Map<ContatoDto>(contato));
+            return Created($"/api/contato/byId/{model.Id}", _mapper.Map<ContatoDto>(contato));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
         public IActionResult Put(int Id, ContatoRegistrarDto model)
         {
             Contato contato = _repository.GetByContatoId(Id);
@@ -88,10 +88,10 @@ namespace Agenda.WebApi.Controllers
             if(_repository.SaveChanges())
                 BadRequest("Não foi possível alterar o registro.");
             
-            return Created($"/api/Contato/{model.Id}", contato);
+            return Created($"/api/Contato/byId/{model.Id}", contato);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
             Contato contatoAux = _repository.GetByContatoId(Id);

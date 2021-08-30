@@ -40,7 +40,7 @@ namespace Agenda.WebApi
             
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda.WebApi", Version = "v1" });
+                c.SwaggerDoc("AgendaApi", new OpenApiInfo { Title = "Agenda Api", Version = "1.0" });
             });
         }
 
@@ -51,7 +51,7 @@ namespace Agenda.WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda.WebApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/AgendaApi/swagger.json", "Agenda.WebApi"));
             }
 
             app.UseHttpsRedirection();
