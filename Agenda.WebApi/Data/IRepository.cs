@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using Agenda.WebApi.Helpers;
 using Agenda.WebApi.Model;
 
 namespace Agenda.WebApi.Data
@@ -15,6 +16,7 @@ namespace Agenda.WebApi.Data
         TipoContato GetTipoContatoById(int Id);
 
         Contato[] GetAllContatos();
+        Task<PageList<Contato>> GetAllContatosAsync(Paginations pageConfig);
         Contato[] GetContatosByIdTipo(int IdTipoContato);
         Contato GetByContatoId(int id);
         Contato GetContatoByName(string Nome, string sobrenome);

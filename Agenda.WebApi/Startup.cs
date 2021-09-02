@@ -10,7 +10,8 @@ using Microsoft.OpenApi.Models;
 using AutoMapper;
 
 using Agenda.WebApi.Data;
-
+using System.Reflection;
+using System.IO;
 
 namespace Agenda.WebApi
 {

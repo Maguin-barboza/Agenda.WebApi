@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Agenda.WebApi.Model;
+using System.Threading.Tasks;
+using Agenda.WebApi.Helpers;
 
 namespace Agenda.WebApi.Data
 {
@@ -47,6 +49,7 @@ namespace Agenda.WebApi.Data
 						 .ThenInclude(cont => cont.TelefonesContato)
 						 .Include(tc => tc.Contatos).ThenInclude(cont => cont.EmailsContato)
 						 .OrderBy(tc => tc.Id);
+			
 			return Query.ToArray();
 		}
 
@@ -66,6 +69,19 @@ namespace Agenda.WebApi.Data
 						 .Include(cont => cont.Tipo)
 						 .OrderBy(contato => contato.Nome);
 			return Query.ToArray();
+		}
+
+		public async Task<PageList<Contato>> GetAllContatosAsync(Paginations pageConfig)
+		{
+			IQueryable<Contato> Query = _context.Tbl_Contatos;
+
+			Query = Query.AsNoTracking()
+						 .Include(cont => cont.TelefonesContato)
+						 .Include(cont => cont.EmailsContato)
+						 .Include(cont => cont.Tipo)
+						 .OrderBy(contato => contato.Nome);
+			
+			return await PageList<Contato>.GetPageList(Query, pageConfig.PageNumber, pageConfig.PageSize);
 		}
 		
 		public Contato[] GetContatosByIdTipo(int IdTipoContato)
