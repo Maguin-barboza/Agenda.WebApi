@@ -39,7 +39,10 @@ namespace Agenda.WebApi.Controllers
 		public async Task<IActionResult> Get([FromQuery]Paginations paginations)
 		{
 			var contatos = await _repository.GetAllContatosAsync(paginations);
-			return Ok(_mapper.Map<IEnumerable<ContatoDto>>(contatos));
+			var contatosResult = _mapper.Map<IEnumerable<ContatoDto>>(contatos);
+
+			Response.AddPagination(contatos.CurrentPage, contatos.TotalPages, contatos.PageSize, contatos.TotalItems);
+			return Ok(contatosResult);
 		}
 		/// <summary>
 		/// Busca 1 contato de acordo com o Id.

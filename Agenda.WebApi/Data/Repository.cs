@@ -81,6 +81,20 @@ namespace Agenda.WebApi.Data
 						 .Include(cont => cont.Tipo)
 						 .OrderBy(contato => contato.Nome);
 			
+			if (pageConfig.Id is not null)
+			{
+				Query = Query.Where(c => c.Id == pageConfig.Id);
+			}
+			else
+			{
+				if (pageConfig.Nome != string.Empty)
+					Query = Query.Where(c => c.Nome.ToUpper().Contains(pageConfig.Nome.ToUpper()) ||
+											c.Sobrenome.ToUpper().Contains(pageConfig.Nome.ToUpper()));
+
+				if (pageConfig.TipoId is not null)
+					Query = Query.Where(c => c.TipoId == pageConfig.TipoId);
+			}
+
 			return await PageList<Contato>.GetPageList(Query, pageConfig.PageNumber, pageConfig.PageSize);
 		}
 		
