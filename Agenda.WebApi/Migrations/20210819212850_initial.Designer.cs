@@ -4,14 +4,16 @@ using Agenda.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Agenda.WebApi.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    partial class AgendaContextModelSnapshot : ModelSnapshot
+    [Migration("20210819212850_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,37 +30,37 @@ namespace Agenda.WebApi.Migrations
 
                     b.Property<string>("Bairro")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Cidade")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Complemento")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("DataAniversario")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Endereco")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("HomePage")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(70)
-                        .HasColumnType("varchar(70)");
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Observacao")
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sobrenome")
                         .HasMaxLength(70)
-                        .HasColumnType("varchar(70)");
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<int>("TipoId")
                         .HasColumnType("int");
@@ -82,7 +84,7 @@ namespace Agenda.WebApi.Migrations
 
                     b.Property<string>("Email")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
@@ -106,7 +108,7 @@ namespace Agenda.WebApi.Migrations
 
                     b.Property<string>("Numero")
                         .HasMaxLength(13)
-                        .HasColumnType("varchar(13)");
+                        .HasColumnType("nvarchar(13)");
 
                     b.HasKey("Id");
 
@@ -124,7 +126,7 @@ namespace Agenda.WebApi.Migrations
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(30)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 

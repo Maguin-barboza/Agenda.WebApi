@@ -1,81 +1,114 @@
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-using Agenda.WebApi.Model;
 using Agenda.WebApi.Data;
+using Agenda.WebApi.Model;
 
 namespace Agenda.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TipoContatoController: ControllerBase
-    {
-        private readonly AgendaContext _context;
+	/// <summary>
+	/// 
+	/// </summary>
+	[ApiController]
+	[Route("api/[controller]")]
+	public class TipoContatoController : ControllerBase
+	{
+		private readonly IRepository _repository;
 
-        public TipoContatoController(AgendaContext context)
-        {
-            _context = context;
-        }
-        
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(_context.Tbl_Tipos_Contato);
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="repository"></param>
+		public TipoContatoController(IRepository repository)
+		{
+			_repository = repository;
+		}
 
-        [HttpGet("byId/{id}")]
-        public IActionResult GetById(int id)
-        {
-            TipoContato tipoContato = _context.Tbl_Tipos_Contato.FirstOrDefault(tc => tc.Id == id);
-            
-            if(tipoContato is null)
-                return BadRequest("Não existe registro com id especificado.");
-            
-            return Ok(tipoContato);
-        }
+		/// <summary>
+		/// Busca todos os tipos de contatos.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public IActionResult Get()
+		{
+			return Ok(_repository.GetAllTipoContato());
+		}
 
-        [HttpPost]
-        public IActionResult Post(TipoContato tipoContato)
-        {
-            _context.Tbl_Tipos_Contato.Add(tipoContato);
-            
-            if(_context.SaveChanges() == 0)
-                BadRequest("Não foi possível incluir o registro.");
-            
-            return Ok(tipoContato);
-        }
+		/// <summary>
+		/// Busca tipo de contato de acordo com seu Id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet("byId/{id}")]
+		public IActionResult GetById(int id)
+		{
+			TipoContato tipoContato = _repository.GetTipoContatoById(id);
 
-        [HttpPut("id")]
-        public IActionResult Put(int Id, TipoContato tipoContato)
-        {
-            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.FirstOrDefault(tc => tc.Id == Id);
-            
-            if(tipoContatoAux is null)
-                return BadRequest("Não existe registro com id especificado.");
-            
-             _context.Tbl_Tipos_Contato.Update(tipoContato);
-            
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar alteração do registro.");
-            
-            return Ok(tipoContato);
-        }
+			if (tipoContato is null)
+				return BadRequest("Não existe registro com id especificado.");
 
-        [HttpDelete]
-        public IActionResult Delete(int Id)
-        {
-            TipoContato tipoContatoAux = _context.Tbl_Tipos_Contato.FirstOrDefault(tc => tc.Id == Id);
-            
-            if(tipoContatoAux is null)
-                return BadRequest("Não existe registro com id especificado.");
-            
-            _context.Tbl_Tipos_Contato.Remove(tipoContatoAux);
+			return Ok(tipoContato);
+		}
 
-            if(_context.SaveChanges() == 0)
-                return BadRequest("Não foi possível realizar a exclusão do registro");
-            
-            return Ok($"Tipo Contato foi deletado com sucesso.");
-        }
-    }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="tipoContato"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public IActionResult Post(TipoContato tipoContato)
+		{
+			_repository.Add(tipoContato);
+
+			if (_repository.SaveChanges())
+				BadRequest("Não foi possível incluir o registro.");
+
+			return Ok(tipoContato);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="tipoContato"></param>
+		/// <returns></returns>
+		[HttpPut("{id}")]
+		public IActionResult Put(int id, TipoContato tipoContato)
+		{
+			TipoContato tipoContatoAux = _repository.GetTipoContatoById(id);
+
+			if (tipoContatoAux is null)
+				return BadRequest("Não existe registro com id especificado.");
+
+			_repository.Update(tipoContato);
+
+			if (_repository.SaveChanges())
+				return BadRequest("Não foi possível realizar alteração do registro.");
+
+			return Ok(tipoContato);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpDelete("{id}")]
+		public IActionResult Delete(int id)
+		{
+			TipoContato tipoContatoAux = _repository.GetTipoContatoById(id);
+
+			if (tipoContatoAux is null)
+				return BadRequest("Não existe registro com id especificado.");
+
+			_repository.Delete(tipoContatoAux);
+
+			if (_repository.SaveChanges())
+				return BadRequest("Não foi possível realizar a exclusão do registro");
+
+			return Ok($"Tipo Contato foi deletado com sucesso.");
+		}
+	}
 }
